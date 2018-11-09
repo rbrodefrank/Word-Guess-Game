@@ -9,21 +9,96 @@ var game = {
         "griffin", "hobgoblin", "hydra", "imp", "lamia", "leprechaun", "manticore", "medusa", "mermaid", "minotaur", "nymph", 
         "ogre", "pegasus", "phoenix", "pixie", "sasquatch", "satyr", "shade", "shapeshifter", "sirens", "sphinx", "sprite", 
         "sylph", "thunderbird", "unicorn", "valkyries", "vampire", "wendigo", "werewolf", "wraith", "zombie"],
+    guessedLetters: [],
+    word: "",
+    wordDisplay: [],
 
-    //function to select random word from wordList
+    //function to return random word from wordList
     randWord: function() {
         var randNum = Math.floor(Math.random()*game.wordList.length);
         console.log("wordList.length: "+game.wordList.length);
         console.log("randNum: "+randNum);
         return game.wordList[randNum];
+    },
+
+    //function to get new word and display blank on screen
+    newWord: function() {
+        var wordDiv = document.getElementById("guessWord");
+        game.word = game.randWord();
+        game.wordDisplay = [];
+        for(var i = 0; i < game.word.length; i++) {
+            game.wordDisplay.push("__");
+            console.log(game.wordDisplay);
+            // console.log("for["+i+"] = " + game.word[i]);
+        }
+        // console.log("wordDisplay: " + wordDisplay)
+        wordDiv.textContent = game.displayGuessWord();
+        console.log("game.word: " + game.word);
+        console.log("game.word.length: " + game.word.length);
+    },
+
+    displayGuessWord: function () {
+        var returnWord = "";
+        for(var i=0; i<game.wordDisplay.length; i++) {
+            returnWord += game.wordDisplay[i] + " ";
+        }
+        console.log("returnWord: " + returnWord);
+        return returnWord;
     }
 }
+
+game.newWord();
+
 document.onkeyup = function(event){
-    if(event.key === "w") {
-        var check = game.randWord();
-        console.log(check);
+    // randWord Function test: press w to see resoluts in console
+    if(event.keyCode === 16) { //on "Shift" key press
+        game.newWord();
+    }
+
+    // console.log(event.keyCode);
+    // Check if the key pressed is a-z
+    if(65 <= event.keyCode && event.keyCode <= 90) {
+        // console.log(event);
+        // console.log("event.key: " + event.key);
+        var letters = document.getElementById("guessedLetters");
+        
+        //check if already guessed
+        if(game.guessedLetters.indexOf(event.key) < 0) {
+            //add to guessedLetters element
+            if(letters.textContent === ""){
+                letters.textContent = event.key.toUpperCase();
+            } else {
+                letters.textContent = letters.textContent+ ", " + event.key.toUpperCase();
+            }
+
+            //add key pressed to guessedLetters array
+            game.guessedLetters.push(event.key);
+
+            //if letter pressed is in the word to guess
+            if(game.word.indexOf(event.key) >= 0){
+                //guessed a letter correctly
+                // console.log("inside game.word.indexOf");
+                for(var i=0; i<game.word.length; i++) {
+                    // console.log("game.word[i]: " + game.word[i]);
+                    // console.log("event.key: " + event.key);
+                    if(game.word[i].toLowerCase() === event.key){
+                        console.log("word[i] === event.key");
+                        console.log("wordDisplay[i] = " + game.wordDisplay[i]);
+                        game.wordDisplay[i] = event.key;
+                        console.log(game.wordDisplay);
+                    }
+                }
+                document.getElementById("guessWord").textContent = game.displayGuessWord();
+            } else {
+                //did not guess correctly
+            }
+        } else {
+            //inform user they already guessed that number
+            document.getElementById("message").textContent = "You've already guessed " + event.key;
+        }
     }
 }
+
 //randomly select a word
 //display word
 
