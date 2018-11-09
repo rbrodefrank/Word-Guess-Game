@@ -3,12 +3,27 @@
 
 
 var game = {
-    wordList: [],
+    //Array with list of words
+    wordList: ["alicorn", "banshee", "basilisk", "bogeyman", "brownies", "centaur", "cerberus", "chimera", "cockatrice", 
+        "cyclops", "demon", "doppelganger", "dragon", "dwarf", "elf", "fairy","ghost", "gnome", "goblin", "golem", "gorgon", 
+        "griffin", "hobgoblin", "hydra", "imp", "lamia", "leprechaun", "manticore", "medusa", "mermaid", "minotaur", "nymph", 
+        "ogre", "pegasus", "phoenix", "pixie", "sasquatch", "satyr", "shade", "shapeshifter", "sirens", "sphinx", "sprite", 
+        "sylph", "thunderbird", "unicorn", "valkyries", "vampire", "wendigo", "werewolf", "wraith", "zombie"],
 
     //function to select random word from wordList
+    randWord: function() {
+        var randNum = Math.floor(Math.random()*game.wordList.length);
+        console.log("wordList.length: "+game.wordList.length);
+        console.log("randNum: "+randNum);
+        return game.wordList[randNum];
+    }
 }
-
-//Array with list of words
+document.onkeyup = function(event){
+    if(event.key === "w") {
+        var check = game.randWord();
+        console.log(check);
+    }
+}
 //randomly select a word
 //display word
 
