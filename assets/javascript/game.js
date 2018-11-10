@@ -12,6 +12,7 @@ var game = {
     guessedLetters: [],
     word: "",
     wordDisplay: [],
+    guesses: 8,
 
     //function to return random word from wordList
     randWord: function() {
@@ -28,13 +29,21 @@ var game = {
         game.wordDisplay = [];
         for(var i = 0; i < game.word.length; i++) {
             game.wordDisplay.push("__");
-            console.log(game.wordDisplay);
+            // console.log(game.wordDisplay);
             // console.log("for["+i+"] = " + game.word[i]);
         }
         // console.log("wordDisplay: " + wordDisplay)
         wordDiv.textContent = game.displayGuessWord();
         console.log("game.word: " + game.word);
         console.log("game.word.length: " + game.word.length);
+
+        //reset guessed letters & guesses
+        game.guesses = 8;
+        document.getElementById("guess-number").textContent = game.guesses;
+        game.guessedLetters = [];
+        document.getElementById("guessedLetters").textContent = game.guessedLetters;
+        document.getElementById("message").textContent = "Guess the Creature!";
+        document.getElementById("creature-name").textContent = "";
     },
 
     displayGuessWord: function () {
@@ -42,7 +51,7 @@ var game = {
         for(var i=0; i<game.wordDisplay.length; i++) {
             returnWord += game.wordDisplay[i] + " ";
         }
-        console.log("returnWord: " + returnWord);
+        // console.log("returnWord: " + returnWord);
         return returnWord;
     }
 }
@@ -82,16 +91,34 @@ document.onkeyup = function(event){
                     // console.log("game.word[i]: " + game.word[i]);
                     // console.log("event.key: " + event.key);
                     if(game.word[i].toLowerCase() === event.key){
-                        console.log("word[i] === event.key");
-                        console.log("wordDisplay[i] = " + game.wordDisplay[i]);
-                        game.wordDisplay[i] = event.key;
-                        console.log(game.wordDisplay);
+                        // console.log("word[i] === event.key");
+                        // console.log("wordDisplay[i] = " + game.wordDisplay[i]);
+                        game.wordDisplay[i] = event.key.toUpperCase();
+                        // console.log(game.wordDisplay);
                     }
                 }
+
+                //Notify the user they were correct
+                document.getElementById("message").textContent = "Correct! " + event.key.toUpperCase() + " is in this word.";
                 document.getElementById("guessWord").textContent = game.displayGuessWord();
             } else {
                 //did not guess correctly
+                game.guesses--;
+                document.getElementById("guess-number").textContent = game.guesses;
+                document.getElementById("message").textContent = "Incorrect! " + event.key.toUpperCase() + " is NOT in this word.";
             }
+
+            //Check win condition
+            if(game.wordDisplay.indexOf("__") < 0) {
+                document.getElementById("message").textContent = "You Won!"
+                document.getElementById("creature-name").textContent = game.word.toUpperCase() + " is the name of the creature!";
+                
+            } else if(game.guesses <= 0) {
+                document.getElementById("message").textContent = "Game Over!";
+                document.getElementById("creature-name").textContent = "The creature was " + game.word.toUpperCase();
+                
+            }
+
         } else {
             //inform user they already guessed that number
             document.getElementById("message").textContent = "You've already guessed " + event.key;

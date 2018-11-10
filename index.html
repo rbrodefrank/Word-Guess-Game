@@ -9,22 +9,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
 </head>
-<body>
-    <div class="jumbotron">
+<body class="bg-secondary">
+    <div class="jumbotron bg-info m-0" id="heading">
         <h1 class="text-center">
           <strong>Word Guess Game</strong>
         </h1>
-        <hr>
+        <hr class="border-dark">
     </div>
-    <div class="text-center container">
-        <h2>Creature to Guess</h2>
+    <div class="text-center container bg-light p-3 px-5" id="main-content">
+        <h2 class="pt-3">Creature to Guess:</h2>
         <!--  -->
         <h3 id="guessWord">New Game</h3>
         <br>
         <!--  -->
+        <h3>Guesses Left: <span id="guess-number"></span></h3>
+        <hr class="border-dark">
         <h4 id="guessedLetters"></h4>
-        <hr>
+        
         <h3 id="message"></h3>
+        <h3 id="creature-name"></h3>
+        <h4 id="shift-message p-3 bg-light">Press 'Shift' for new game.</h4>
     </div>
 
     <script src="assets/javascript/game.js"></script>
